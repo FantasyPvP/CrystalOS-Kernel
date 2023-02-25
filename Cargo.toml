@@ -1,5 +1,5 @@
 [package]
-name = "CrystalOS-Kernel"
+name = "crystal_os_kernel"
 version = "0.1.0"
 edition = "2021"
 
