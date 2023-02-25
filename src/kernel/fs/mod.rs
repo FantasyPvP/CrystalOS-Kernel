@@ -58,7 +58,7 @@ pub fn mkfs() {
 }
  
 fn print(x: String) {
-    println!("{}", x);
+    ()
 }
 
 
