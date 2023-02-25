@@ -206,5 +206,5 @@ pub fn write(args: core::fmt::Arguments, cols: (Color, Color)) {
 pub fn mkdir() {
     use crate::kernel::fs;
     fs::mkfs();
-    println!("{:?}", kernel::fs::FILESYSTEM.lock().into_inner());
+    println!("{:?}", fs::FILESYSTEM.lock().into_inner());
 }

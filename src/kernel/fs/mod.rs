@@ -3,27 +3,64 @@ use spin::Mutex;
 use alloc::{vec::Vec, string::String, boxed::Box};
 
 lazy_static! {
-    pub static ref FILESYSTEM: Mutex<Directory> = Mutex::new(Directory::new());
+    pub static ref FILESYSTEM: Mutex<Box<File>> = Mutex::new(Box::new(File::new(
+        String::from(""), // root
+        FileType::Dir(Directory::new()),
+    )));
 }
 
 pub type Directory = Vec<Box<File>>;
 
-pub struct File<T> {
+pub struct File {
     pub name: String,
-    pub data: T,
+    pub data: FileType,
 }
-impl<T> File<T> {
-    pub fn new(name: String, data: T) -> Self {
+impl File {
+    pub fn new(name: String, data: FileType) -> Self {
         Self { name, data }
     }
 }
 
-fn mkfs() {
+pub enum FileType {
+    Dir(Directory),
+    Txt(String),
+    Exe(fn()),
+}
+
+
+
+
+pub fn mkfs() {
     let mut fs = FILESYSTEM.lock();
-    fs.push(File::new(String::from("root"), Directory::new()));
+
+    match fs.data {
+        FileType::Dir(dir) => {
+            dir.push(Box::new(
+                File::new(
+                    String::from("hello there"),
+                    FileType::Txt(String::from("this is a basic text file")),
+                )
+            ));
+            dir.push(Box::new(
+                File::new(
+                    String::from("function that prints out an integer"),
+                    FileType::Exe(print),
+                )
+            ));
+        }
+        _ => {
+            ()
+        }
+    }
+
+
     fs[0].data.push(File::new(String::from("test.txt"), String::from("test")));
 }
  
+fn print(x: String) {
+    println!("{}", x);
+}
+
 
 /* 
 lazy_static! {
