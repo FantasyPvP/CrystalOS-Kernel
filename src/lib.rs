@@ -7,9 +7,7 @@
 #![feature(global_asm)]
 
 mod kernel;
-pub mod std {
-	pub use crate::std as std;
-}
+pub mod std;
 
 extern crate alloc;
 use bootloader::{BootInfo};
