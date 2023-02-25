@@ -1,6 +1,6 @@
 use lazy_static::lazy_static;
 use spin::Mutex;
-
+use alloc::{vec::Vec, string::String, boxed::Box};
 
 lazy_static! {
     pub static ref FILESYSTEM: Mutex<Directory> = Mutex::new(Directory::new());
