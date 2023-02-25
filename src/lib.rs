@@ -12,6 +12,7 @@ pub mod std;
 extern crate alloc;
 use bootloader::{BootInfo};
 
+
 pub fn init(boot_info: &'static BootInfo) {
 	kernel::gdt::init();
 	kernel::interrupts::init_idt();

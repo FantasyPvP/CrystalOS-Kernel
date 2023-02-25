@@ -1,11 +1,14 @@
 use crate::{
     kernel::render::{Color, write, RENDERER, BUFFER_WIDTH, BUFFER_HEIGHT, ColorCode},
     kernel::tasks::keyboard::KEYBOARD,
-    kernel::os::OS,
 };
+
+use super::os::OS;
+
+
 use alloc::{boxed::Box, string::{String, ToString}, vec::Vec};
 
-pub use crate::{print, println, serial_print, serial_println};
+use crate::{print, println, serial_print, serial_println};
 
 use lazy_static::lazy_static;
 use spin::Mutex;
@@ -19,6 +22,25 @@ pub async fn stdchar() -> char {
     let chr = KEYBOARD.lock().get_keystroke().await;
     chr
 }
+
+pub fn text_mode() {
+    RENDERER.lock().text_mode().unwrap();
+}
+
+pub fn sandbox_mode() {
+    RENDERER.lock().sandbox_mode().unwrap();
+}
+
+pub fn switch_mode() {
+    if RENDERER.lock().sandbox == true {
+        RENDERER.lock().text_mode().unwrap();
+    } else {
+        RENDERER.lock().sandbox_mode().unwrap();
+    }
+}
+
+
+
 
 
 pub type Frame = [ [ char; BUFFER_WIDTH ]; BUFFER_HEIGHT];
