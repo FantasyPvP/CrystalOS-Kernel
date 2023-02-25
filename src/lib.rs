@@ -6,7 +6,7 @@
 #![feature(async_fn_in_trait)]
 #![feature(global_asm)]
 
-mod kernel;
+pub mod kernel;
 pub mod std;
 
 extern crate alloc;
