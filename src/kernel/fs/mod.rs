@@ -35,8 +35,8 @@ pub enum FileType {
 pub fn mkfs() {
     let mut fs = FILESYSTEM.lock();
 
-    match fs.data {
-        FileType::Dir(dir) => {
+    match &fs.data {
+        FileType::Dir(mut dir) => {
             dir.push(Box::new(
                 File::new(
                     String::from("hello there"),
