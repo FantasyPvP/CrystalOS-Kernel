@@ -52,9 +52,6 @@ pub fn mkfs() {
             ()
         }
     }
-
-
-    fs[0].data.push(File::new(String::from("test.txt"), String::from("test")));
 }
  
 fn print(x: String) {
