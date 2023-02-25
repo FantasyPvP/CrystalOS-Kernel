@@ -1,16 +1,7 @@
 pub mod io;
 pub mod random;
 pub mod application;
-pub mod task;
-
-
-
-
-
-
-
-
-
+pub mod tasks;
 
 
 // this is where the standard library for the operating system will be defined

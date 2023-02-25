@@ -7,10 +7,12 @@
 #![feature(global_asm)]
 
 mod kernel;
-pub mod std;
+pub mod std {
+	pub use crate::std as std;
+}
 
 extern crate alloc;
-use bootloader::{BootInfo, entry_point};
+use bootloader::{BootInfo};
 
 pub fn init(boot_info: &'static BootInfo) {
 	kernel::gdt::init();
@@ -18,7 +20,7 @@ pub fn init(boot_info: &'static BootInfo) {
 	unsafe { kernel::interrupts::PICS.lock().initialize() };
 	x86_64::instructions::interrupts::enable();
 
-    use x86_64::{structures::paging::{Page, Translate}, VirtAddr};
+    use x86_64::VirtAddr;
 
 	let physical_memory_offset = VirtAddr::new(boot_info.physical_memory_offset);
 	let mut mapper = unsafe { kernel::memory::init(physical_memory_offset) };
