@@ -1,5 +1,5 @@
 use crate::{
-    kernel::render::{write, RENDERER, BUFFER_WIDTH, BUFFER_HEIGHT, ColorCode},
+    kernel::render::{RENDERER, BUFFER_WIDTH, BUFFER_HEIGHT, ColorCode},
     kernel::tasks::keyboard::KEYBOARD,
 };
 
@@ -194,4 +194,8 @@ pub fn _log(args: core::fmt::Arguments) {
 		
 		//WRITER.lock().write_fmt(args).unwrap();
 	});
+}
+
+pub fn write(args: core::fmt::Arguments, cols: (Color, Color)) {
+    crate::kernel::render::write(args, cols);
 }
