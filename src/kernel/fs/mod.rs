@@ -12,9 +12,16 @@ pub struct File<T> {
     pub name: String,
     pub data: T,
 }
+impl<T> File<T> {
+    pub fn new(name: String, data: T) -> Self {
+        Self { name, data }
+    }
+}
 
-
-
+fn mkfs() {
+    FILESYSTEM.lock().push(File)
+}
+ 
 
 /* 
 lazy_static! {
