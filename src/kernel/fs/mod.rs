@@ -54,9 +54,7 @@ pub fn mkfs() {
     }
 }
  
-fn print(x: String) {
-    ()
-}
+fn print() {}
 
 
 /* 
