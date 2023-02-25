@@ -16,3 +16,4 @@ pub enum Error {
 	CommandFailed(String),
 	EmptyCommand,
 }
+
