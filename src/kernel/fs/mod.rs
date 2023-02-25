@@ -19,7 +19,9 @@ impl<T> File<T> {
 }
 
 fn mkfs() {
-    FILESYSTEM.lock().push(File)
+    let mut fs = FILESYSTEM.lock();
+    fs.push(File::new(String::from("root"), Directory::new()));
+    fs[0].data.push(File::new(String::from("test.txt"), String::from("test")));
 }
  
 
