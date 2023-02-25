@@ -3,8 +3,6 @@ use crate::{
     kernel::tasks::keyboard::KEYBOARD,
 };
 
-use super::os::OS;
-
 
 use alloc::{boxed::Box, string::{String, ToString}, vec::Vec};
 
@@ -37,6 +35,10 @@ pub fn switch_mode() {
     } else {
         RENDERER.lock().sandbox_mode().unwrap();
     }
+}
+
+pub fn clear() {
+    RENDERER.lock().clear();
 }
 
 
