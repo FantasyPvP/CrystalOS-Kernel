@@ -6,7 +6,7 @@ use crate::{
 
 use alloc::{boxed::Box, string::{String, ToString}, vec::Vec};
 
-use crate::{print, println, serial_print, serial_println};
+pub use crate::{print, println, serial_print, serial_println};
 
 use lazy_static::lazy_static;
 use spin::Mutex;
