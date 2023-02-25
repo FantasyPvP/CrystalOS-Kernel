@@ -1,5 +1,5 @@
 use crate::{
-    kernel::render::{Color, write, RENDERER, BUFFER_WIDTH, BUFFER_HEIGHT, ColorCode},
+    kernel::render::{write, RENDERER, BUFFER_WIDTH, BUFFER_HEIGHT, ColorCode},
     kernel::tasks::keyboard::KEYBOARD,
 };
 
@@ -165,7 +165,7 @@ macro_rules! print {
 	($($arg:tt)*) => ($crate::std::io::_print(format_args!($($arg)*)));
 }
 
-
+pub use crate::kernel::render::Color;
 
 
 #[doc(hidden)]
