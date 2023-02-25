@@ -11,6 +11,7 @@ lazy_static! {
 
 pub type Directory = Vec<Box<File>>;
 
+#[derive(Debug)]
 pub struct File {
     pub name: String,
     pub data: FileType,
@@ -21,6 +22,7 @@ impl File {
     }
 }
 
+#[derive(Debug)]
 pub enum FileType {
     Dir(Directory),
     Txt(String),
