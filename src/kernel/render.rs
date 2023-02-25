@@ -32,10 +32,10 @@ pub enum Color {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(transparent)]
-struct ColorCode(u8);
+pub struct ColorCode(u8);
 
 impl ColorCode {
-	fn new(foreground: Color, background: Color) -> ColorCode {
+	pub fn new(foreground: Color, background: Color) -> ColorCode {
 		ColorCode((background as u8) << 5 | (foreground as u8))
 	}
 }
@@ -64,7 +64,7 @@ struct CharGrid {
 
 pub struct Renderer {
 	col_pos: usize,
-	col_code: ColorCode,
+	pub col_code: ColorCode,
 	buffer: &'static mut Buffer,
     userspace: BufferSwap,
     upwards: CharGrid,
@@ -283,56 +283,4 @@ pub fn write(args: fmt::Arguments, cols: (Color, Color)) {
 	})
 }
 
-#[doc(hidden)]
-pub fn _log(args: fmt::Arguments) {
-	use core::fmt::Write;
-	use x86_64::instructions::interrupts;
 
-	interrupts::without_interrupts(|| {
-		let mut writer = RENDERER.lock();
-		writer.col_code = ColorCode::new(Color::Yellow, Color::Black);
-		writer.write_fmt(args).unwrap();
-		
-		//WRITER.lock().write_fmt(args).unwrap();
-	});
-}
-
-#[macro_export]
-macro_rules! println_log {
-	() => ($crate::print_log!("/n"));
-	($($arg:tt)*) => ($crate::print_log!("{}\n", format_args!($($arg)*)));
-}
-
-#[macro_export]
-macro_rules! print_log {
-	($($arg:tt)*) => ($crate::render::_log(format_args!($($arg)*)));
-}
-
-
-#[macro_export]
-macro_rules! println {
-	() => ($crate::print!("/n"));
-	($($arg:tt)*) => ($crate::print!("{}\n", format_args!($($arg)*)));
-}
-
-#[macro_export]
-macro_rules! print {
-	($($arg:tt)*) => ($crate::kernel::render::_print(format_args!($($arg)*)));
-}
-
-
-
-
-#[doc(hidden)]
-pub fn _print(args: fmt::Arguments) {
-	use core::fmt::Write;
-	use x86_64::instructions::interrupts;
-
-	interrupts::without_interrupts(|| {
-		let mut writer = RENDERER.lock();
-		writer.col_code = ColorCode::new(Color::White, Color::Black);
-		writer.write_fmt(args).unwrap();
-		
-		//WRITER.lock().write_fmt(args).unwrap();
-	});
-}

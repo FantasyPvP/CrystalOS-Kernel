@@ -1,5 +1,5 @@
 use crate::{
-    kernel::render::{Color, write, RENDERER, BUFFER_WIDTH, BUFFER_HEIGHT},
+    kernel::render::{Color, write, RENDERER, BUFFER_WIDTH, BUFFER_HEIGHT, ColorCode},
     kernel::tasks::keyboard::KEYBOARD,
     kernel::os::OS,
 };
@@ -114,3 +114,60 @@ impl core::fmt::Display for FrameGen {
     }
 }
 
+
+
+
+
+#[macro_export]
+macro_rules! println_log {
+	() => ($crate::print_log!("/n"));
+	($($arg:tt)*) => ($crate::print_log!("{}\n", format_args!($($arg)*)));
+}
+
+#[macro_export]
+macro_rules! print_log {
+	($($arg:tt)*) => ($crate::std::io::_log(format_args!($($arg)*)));
+}
+
+
+#[macro_export]
+macro_rules! println {
+	() => ($crate::print!("/n"));
+	($($arg:tt)*) => ($crate::print!("{}\n", format_args!($($arg)*)));
+}
+
+#[macro_export]
+macro_rules! print {
+	($($arg:tt)*) => ($crate::std::io::_print(format_args!($($arg)*)));
+}
+
+
+
+
+#[doc(hidden)]
+pub fn _print(args: core::fmt::Arguments) {
+	use core::fmt::Write;
+	use x86_64::instructions::interrupts;
+
+	interrupts::without_interrupts(|| {
+		let mut writer = RENDERER.lock();
+		writer.col_code = ColorCode::new(Color::White, Color::Black);
+		writer.write_fmt(args).unwrap();
+		
+		//WRITER.lock().write_fmt(args).unwrap();
+	});
+}
+
+#[doc(hidden)]
+pub fn _log(args: core::fmt::Arguments) {
+	use core::fmt::Write;
+	use x86_64::instructions::interrupts;
+
+	interrupts::without_interrupts(|| {
+		let mut writer = RENDERER.lock();
+		writer.col_code = ColorCode::new(Color::Yellow, Color::Black);
+		writer.write_fmt(args).unwrap();
+		
+		//WRITER.lock().write_fmt(args).unwrap();
+	});
+}
