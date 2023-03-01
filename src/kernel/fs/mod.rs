@@ -1,6 +1,8 @@
 use lazy_static::lazy_static;
 use spin::Mutex;
 use alloc::{vec::Vec, string::String, boxed::Box};
+use crate::std;
+
 
 lazy_static! {
     pub static ref FILESYSTEM: Mutex<Box<File>> = Mutex::new(Box::new(File::new(
@@ -26,7 +28,7 @@ impl File {
 pub enum FileType {
     Dir(Directory),
     Txt(String),
-    Exe(fn()),
+    Exe(Application),
 }
 
 
@@ -46,7 +48,7 @@ pub fn mkfs() {
             dir.push(Box::new(
                 File::new(
                     String::from("function that prints out an integer"),
-                    FileType::Exe(print),
+                    FileType::Exe(Apppp::new()),
                 )
             ));
         }
@@ -55,9 +57,17 @@ pub fn mkfs() {
         }
     }
 }
- 
-fn print() {}
 
+
+struct Apppp {}
+impl std::application::Application for Apppp {
+    fn new() -> Self {
+        Self {}
+    }
+    fn run(&mut self, _: Vec<String>) -> Result<(), Error> {
+        Ok(())
+    }
+}
 
 /* 
 lazy_static! {
